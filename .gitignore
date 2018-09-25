@@ -26,3 +26,6 @@ hs_err_pid*
 # Confidential configuration files
 config.properties
 log4j2.properties
+
+# Binnaries
+bin/*
