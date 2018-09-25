@@ -30,7 +30,7 @@ public class Init extends Application {
 
 		try {
 			// Carrega as configurações da aplicação (arquivo: config.properties)
-			is = new FileInputStream(DIR + "/res/config.properties");
+			is = new FileInputStream(RES + "/config.properties");
 			p.load(is);
 			is.close();
 
@@ -42,14 +42,12 @@ public class Init extends Application {
 		} catch (IOException | CryptoException e) {
 			LOG.warn("Arquivo de configuração não encontrado.");
 			LOG.error(e.getMessage());
-			opcao = "--init";
+			help();
+			System.exit(0);
 		}
 
 		// Tratando os argumentos de inicialização
 		switch (opcao) {
-		case "--init":
-			LOG.warn("Iniciando configuração da aplicação CNABBradesco.");
-			break;
 		case "--help":
 			help();
 			break;
@@ -74,11 +72,22 @@ public class Init extends Application {
 	}
 
 	private static void help() {
-		System.out.println("CNABBradesco - Manipulador de arquivos CNAB do Banco Bradesco" + "\n");
-		System.out.println("Uso: java jar cnabbradesco.jar [OPÇÃO] \"ARQUIVO\" \"DIRETORIO_DESTINO\"" + "\n");
-		System.out.println("Opções de comandos:");
+		System.out.println("CNABBradesco - Manipulador de arquivos CNAB do Banco Bradesco");
+		System.out.println("\n" + "Uso: java jar cnabbradesco.jar [OPÇÃO] \"ARQUIVO\" \"DIRETORIO_DESTINO\"");
+		System.out.println("\n" + "Opções de comandos:");
 		System.out.println("  -d   Descriptografa um arquivo CNAB");
 		System.out.println("  -c   Criptografa um arquivo CNAB");
+		System.out.println("\n" + "Pré-requisitos de uso:");
+		System.out.println("   1 - Arquivo \"config.properties\":");
+		System.out.println(
+				"       Deve ser criado no mesmo contexto de execução desta biblioteca, dentro da pasta \"res/\";");
+		System.out.println(
+				"       Deve conter as propriedades \"cnabbradesco.criptografia.token\" e \"cnabbradesco.criptografia.senha\" contendo o diretório do arquivo chave (.bin) e a senha de acesso ao WEBTA, respectivamente (vide \"config.properties.example\");");
+		System.out.println("   2 - Arquivo \"log4j2.properties\":");
+		System.out.println(
+				"       Deve ser criado no mesmo contexto de execução desta biblioteca, dentro da pasta \"res/\" seguindo como exemplo o arquivo \"log4j2.properties.example\";");
+		System.out.println(
+				"       A propridedade \"property.logs\" deve ser configurada com o diretório que irá conter os logs de aplicação.");
 	}
 
 }
