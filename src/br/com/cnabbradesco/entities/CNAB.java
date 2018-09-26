@@ -17,7 +17,7 @@ import br.com.cnabbradesco.utils.Application;
 
 /**
  * 
- * @author bruno.alves <brunosalves3@gmail.com>
+ * @author Bruno Alves <brunosalves3@gmail.com>
  */
 public class CNAB extends Application {
 
@@ -27,12 +27,16 @@ public class CNAB extends Application {
 
 	/**
 	 * 
-	 * @param arquivoDescriptografado
-	 * @param diretorioDestino
+	 * @param destino
+	 * 
+	 * @throws IOException
+	 * @throws CryptoException
+	 * @throws ParameterException
+	 * @throws GZipException
 	 */
 	public void criptografar(String destino) throws IOException, CryptoException, ParameterException, GZipException {
 		LOG.info("Criptografando o arquivo \"" + this.arquivo.get("localizacao") + this.arquivo.get("nome")
-				+ "\" para \"" + destino + this.arquivo.get("nome") + "\"");
+				+ "\" para \"" + destino + this.arquivo.get("nome") + "\".");
 
 		// Declaração de variáveis
 		WEBTAOutputStream wos = new WEBTAOutputStream(this.arquivo.get("nome"), destino, this.token);
@@ -53,8 +57,6 @@ public class CNAB extends Application {
 
 	/**
 	 * 
-	 * @param token
-	 * @param senha
 	 * @param destino
 	 * 
 	 * @throws IOException
@@ -86,34 +88,61 @@ public class CNAB extends Application {
 	}
 
 	// Getters
+	/**
+	 * 
+	 * @return
+	 */
 	public String getSenha() {
 		return this.senha;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public byte[] getToken() {
 		return this.token;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public LinkedHashMap<String, String> getArquivo() {
 		return this.arquivo;
 	}
 
 	// Setters
+	/**
+	 * 
+	 * @param senha
+	 */
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 
+	/**
+	 * 
+	 * @param token
+	 * 
+	 * @throws IOException
+	 * @throws CryptoException
+	 */
 	public void setToken(String token) throws IOException, CryptoException {
 		if (!isValidFileOrDirectory(token)) {
-			System.out.println("Arquivo token não encontrado.");
+			LOG.error("Arquivo token não encontrado.");
 			System.exit(0);
 		}
 		this.token = WEBTACryptoUtil.decodeKeyFile(new File(token), this.senha);
 	}
 
+	/**
+	 * 
+	 * @param arquivo
+	 */
 	public void setArquivo(String arquivo) {
 		if (!isValidFileOrDirectory(arquivo)) {
-			System.out.println("Arquivo token não encontrado.");
+			LOG.error("Arquivo CNAB não encontrado.");
 			System.exit(0);
 		}
 		String[] aux = arquivo.split("/");
@@ -125,7 +154,7 @@ public class CNAB extends Application {
 	/**
 	 * 
 	 * @param path
-	 * @return boolean
+	 * @return
 	 */
 	protected boolean isValidFileOrDirectory(String path) {
 		return new File(path).exists();
