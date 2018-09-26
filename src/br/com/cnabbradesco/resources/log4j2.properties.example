@@ -1,9 +1,10 @@
+# Configurar a propriedade abaixo:
+property.logs = 
+
+# Demais configurações (recomendado que não seja alterado)
 status = error
 dest = err
 name = PropertiesConfig
- 
- # Configurar a propriedade abaixo:
-property.logs = 
 
 property.filename = ${logs}/current.log
  

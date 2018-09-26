@@ -19,7 +19,7 @@ import br.com.cnabbradesco.utils.Application;
  * 
  * @author Bruno Alves <brunosalves3@gmail.com>
  */
-public class CNAB extends Application {
+public class CNAB {
 
 	private String senha;
 	private byte[] token;
@@ -35,14 +35,14 @@ public class CNAB extends Application {
 	 * @throws GZipException
 	 */
 	public void criptografar(String destino) throws IOException, CryptoException, ParameterException, GZipException {
-		LOG.info("Criptografando o arquivo \"" + this.arquivo.get("localizacao") + this.arquivo.get("nome")
+		Application.LOG.info("Criptografando o arquivo \"" + this.arquivo.get("localizacao") + this.arquivo.get("nome")
 				+ "\" para \"" + destino + this.arquivo.get("nome") + "\".");
 
 		// Declaração de variáveis
 		WEBTAOutputStream wos = new WEBTAOutputStream(this.arquivo.get("nome"), destino, this.token);
 		byte[] bufCripto = new byte[8192];
 		int len = 0;
-		FileInputStream fis = new FileInputStream(this.arquivo.get("localizacao") + this.arquivo.get("nome"));
+		FileInputStream fis = new FileInputStream(this.arquivo.get("localizacao") + "/" + this.arquivo.get("nome"));
 
 		// Escrita de conteúdo descriptografado
 		while ((len = fis.read(bufCripto)) > 0) {
@@ -64,15 +64,15 @@ public class CNAB extends Application {
 	 * @throws ParameterException
 	 */
 	public void descriptografar(String destino) throws IOException, CryptoException, ParameterException {
-		LOG.info("Descriptografando o arquivo \"" + this.arquivo.get("localizacao") + this.arquivo.get("nome")
-				+ "\" para \"" + destino + this.arquivo.get("nome") + "\".");
+		Application.LOG.info("Descriptografando o arquivo \"" + this.arquivo.get("localizacao")
+				+ this.arquivo.get("nome") + "\" para \"" + destino + this.arquivo.get("nome") + "\".");
 
 		// Declaração de variáveis
 		WEBTAInputStream wis = new WEBTAInputStream(this.arquivo.get("nome"), this.arquivo.get("localizacao"),
 				this.token);
 		byte[] bufDecripto = new byte[WEBTAInputStream.BUF_SIZE];
 		int len = 0;
-		FileOutputStream fos = new FileOutputStream(destino + this.arquivo.get("nome"));
+		FileOutputStream fos = new FileOutputStream(destino + "/" + this.arquivo.get("nome"));
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 
 		// Escrita de conteúdo descriptografado
@@ -130,7 +130,7 @@ public class CNAB extends Application {
 	 */
 	public void setToken(String token) throws IOException, CryptoException {
 		if (!isValidFileOrDirectory(token)) {
-			LOG.error("Arquivo token não encontrado.");
+			Application.LOG.error("Arquivo token não encontrado.");
 			System.exit(0);
 		}
 		this.token = WEBTACryptoUtil.decodeKeyFile(new File(token), this.senha);
@@ -142,7 +142,7 @@ public class CNAB extends Application {
 	 */
 	public void setArquivo(String arquivo) {
 		if (!isValidFileOrDirectory(arquivo)) {
-			LOG.error("Arquivo CNAB não encontrado.");
+			Application.LOG.error("Arquivo CNAB não encontrado.");
 			System.exit(0);
 		}
 		String[] aux = arquivo.split("/");
