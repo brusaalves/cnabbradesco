@@ -76,14 +76,18 @@ public class Init {
 		case "-d":
 			try {
 				cb.descriptografar(destino);
+				System.out.println("Arquivo descriptografado com sucesso." + "\n");
 			} catch (IOException | CryptoException | ParameterException e) {
+				System.out.println("Falha ao descriptografar o arquivo." + "\n");
 				Application.LOG.error(e.getMessage());
 			}
 			break;
 		case "-c":
 			try {
 				cb.criptografar(destino);
+				System.out.println("Arquivo criptografado com sucesso." + "\n");
 			} catch (IOException | CryptoException | ParameterException | GZipException e) {
+				System.out.println("Falha ao criptografar o arquivo." + "\n");
 				Application.LOG.error(e.getMessage());
 			}
 			break;
@@ -97,8 +101,8 @@ public class Init {
 		System.out.println("\n" + "CNABBradesco - Manipulador de arquivos CNAB do Banco Bradesco");
 		System.out.println("\n" + "Uso: java -jar cnabbradesco.jar [OPÇÃO] \"ARQUIVO\" \"DIRETORIO_DESTINO\"");
 		System.out.println("\n" + "Opções de comandos:");
-		System.out.println("  -d   Descriptografa um arquivo CNAB remessa (.RET)");
-		System.out.println("  -c   Criptografa um arquivo CNAB retorno (.REM)");
+		System.out.println("  -d   Descriptografa um arquivo CNAB retorno (.RET)");
+		System.out.println("  -c   Criptografa um arquivo CNAB remessa (.REM)");
 		System.out.println("\n" + "Pré-requisitos de uso:");
 		System.out.println("   1 - Arquivo \"config.properties\":");
 		System.out.println("       Deve ser criado no mesmo contexto de execução desta biblioteca, dentro da pasta \""
